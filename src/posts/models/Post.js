@@ -11,6 +11,10 @@ const postSchema = new Schema(
       required: true,
     },
     image: String,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   {
     timestamp: true,
