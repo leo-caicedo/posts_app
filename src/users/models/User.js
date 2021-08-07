@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const userSchema = new Schema(
   {
@@ -23,6 +24,17 @@ const userSchema = new Schema(
   }
 );
 
+// ecnrypt password
+userSchema.statics.encryptPassword = async (password) => {
+  const salt = await bcrypt.genSalt(6);
+  return await bcrypt.hash(password, salt);
+};
+
+userSchema.statics.validatePassword = async (password, receivedPassword) => {
+  return await bcrypt.compare(password, receivedPassword);
+};
+
+// delete password for response
 userSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     delete returnedObject.password;

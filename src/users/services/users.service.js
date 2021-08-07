@@ -23,10 +23,15 @@ class UsersServices {
   }
 
   async createUser(req, res, next) {
-    const { body: data } = req;
+    const { username, password, country, posts } = req.body;
 
     try {
-      const createdUser = new User(data);
+      const createdUser = new User({
+        username,
+        password: await User.encryptPassword(password),
+        country,
+        posts,
+      });
 
       await createdUser.save();
       res.status(201).json(createdUser);
