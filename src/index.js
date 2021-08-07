@@ -2,6 +2,7 @@ const createApp = require("./app");
 
 const { config } = require("./config");
 const app = createApp();
+require("./db");
 
 app.listen(config.port, (err) => {
   if (err) {
