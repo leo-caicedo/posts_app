@@ -4,9 +4,12 @@ const postSchema = new Schema(
   {
     title: {
       type: String,
-      require: true,
+      required: true,
     },
-    content: String,
+    content: {
+      type: String,
+      required: true,
+    },
     image: String,
   },
   {
