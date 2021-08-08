@@ -1,5 +1,6 @@
 // model
 const Post = require("../models/Post");
+const User = require("../../users/models/User");
 
 class PostsServices {
   async getPosts(req, res, next) {
@@ -23,13 +24,20 @@ class PostsServices {
   }
 
   async createPost(req, res, next) {
-    const { body: data } = req;
+    const { title, content, image, user } = req.body;
 
     try {
-      const createdPost = new Post(data);
-
-      await createdPost.save();
-      res.status(201).json(createdPost);
+      const autor = await User.findById(user); // busca el autor del post
+      const postCreated = new Post({
+        title,
+        content,
+        image,
+        user: autor.__id,
+      });
+      await postCreated.save();
+      autor.notes = autor.notes.concaT(postCreated._id); // adiciona el post al usuario
+      await autor.save();
+      res.status(201).json(postCreated);
     } catch (err) {
       next(err);
     }
@@ -40,12 +48,12 @@ class PostsServices {
     const { id } = req.params;
 
     try {
-      const updatedPost = await Post.findByIdAndUpdate(id, data, {
+      const postUpdated = await Post.findByIdAndUpdate(id, data, {
         new: true,
       });
-      await updatedPost.save();
+      await postUpdated.save();
 
-      res.json(updatedPost);
+      res.json(postUpdated);
     } catch (err) {
       next(err);
     }
