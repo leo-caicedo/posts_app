@@ -5,7 +5,10 @@ const User = require("../../users/models/User");
 class PostsServices {
   async getPosts(req, res, next) {
     try {
-      const posts = await Post.find();
+      const posts = await Post.find({}).populate("user", {
+        _id: 0,
+        username: 1,
+      });
       res.json(posts);
     } catch (err) {
       next(err);
@@ -16,7 +19,10 @@ class PostsServices {
     const { id } = req.params;
 
     try {
-      const post = await Post.findById(id);
+      const post = await Post.findById(id).populate("user", {
+        _id: 0,
+        username: 1,
+      });
       res.json(post);
     } catch (err) {
       next(err);
@@ -32,10 +38,10 @@ class PostsServices {
         title,
         content,
         image,
-        user: autor.__id,
+        user: autor._id,
       });
       await postCreated.save();
-      autor.notes = autor.notes.concaT(postCreated._id); // adiciona el post al usuario
+      autor.posts = autor.posts.concat(postCreated._id); // adiciona el post al usuario
       await autor.save();
       res.status(201).json(postCreated);
     } catch (err) {
