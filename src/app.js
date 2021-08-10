@@ -29,6 +29,7 @@ const createApp = () => {
   app.use(logErrors);
   app.use(wrapErrors);
   app.use(errorHandler);
+
   return app;
 };
 
