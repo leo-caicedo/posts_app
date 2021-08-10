@@ -10,6 +10,8 @@ const {
   wrapErrors,
   errorHandler,
 } = require("./utils/middleware/errorHandlers");
+const notFoundHandler = require("./utils/middleware/notFoundHandler");
+
 const createApp = () => {
   const app = express();
 
@@ -19,6 +21,9 @@ const createApp = () => {
   // routes
   app.use("/api/posts", postsRoutes);
   app.use("/api/users", usersRoutes);
+
+  // Catch 404
+  app.use(notFoundHandler);
 
   // Errors middleware
   app.use(logErrors);
