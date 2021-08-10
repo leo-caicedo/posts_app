@@ -22,10 +22,10 @@ const createApp = () => {
   app.use("/api/posts", postsRoutes);
   app.use("/api/users", usersRoutes);
 
-  // Catch 404
+  // catch 404
   app.use(notFoundHandler);
 
-  // Errors middleware
+  // errors middleware
   app.use(logErrors);
   app.use(wrapErrors);
   app.use(errorHandler);
