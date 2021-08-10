@@ -4,6 +4,12 @@ const express = require("express");
 const postsRoutes = require("./posts/routes/posts.routes");
 const usersRoutes = require("./users/routes/users.routes");
 
+// errorHandler
+const {
+  logErrors,
+  wrapErrors,
+  errorHandler,
+} = require("./utils/middleware/errorHandlers");
 const createApp = () => {
   const app = express();
 
@@ -13,6 +19,11 @@ const createApp = () => {
   // routes
   app.use("/api/posts", postsRoutes);
   app.use("/api/users", usersRoutes);
+
+  // Errors middleware
+  app.use(logErrors);
+  app.use(wrapErrors);
+  app.use(errorHandler);
   return app;
 };
 

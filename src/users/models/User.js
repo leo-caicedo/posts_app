@@ -30,9 +30,9 @@ userSchema.statics.encryptPassword = async (password) => {
   return await bcrypt.hash(password, salt);
 };
 
-userSchema.statics.validatePassword = async (password, receivedPassword) => {
-  return await bcrypt.compare(password, receivedPassword);
-};
+//userSchema.statics.validatePassword = async (password, receivedPassword) => {
+//return await bcrypt.compare(password, receivedPassword);
+//};
 
 // delete password for response
 userSchema.set("toJSON", {
